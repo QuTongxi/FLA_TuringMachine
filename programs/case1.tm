@@ -1,51 +1,44 @@
-#Q = {0,a,b,ret,cpy,gbk,acc,ilg,emp,inv,i,il,ill,ille,illeg,illega,illegal,illegal_,illegal_i,illegal_in,illegal_inp,illegal_inpu,illegal_input,ret2}
-#S = {a,b}
-#G = {a,b,c,_,X,I,l,e,g,n,p,u,t}
-#q0 = 0
+#Q = {1,2,3,4,5,6,7,8,9,10,11,i,il,ill,ille,illeg,illega,illegal,illegal_,illegal_i,illegal_in,illegal_inp,illegal_inpu,illegal_input}
+#S = {a,b,c}
+#G = {a,b,c,_,x,I,l,e,g,n,p,u,t}
+#q0 = 1
 #B = _
-#F = {acc}
-#N = 3
-
-0 a__ Xa_ rr* a
-a a__ _a_ rr* a
-a b__ __b r*r b
-b b__ __b r*r b 
-b ___ ___ lll ret
-ret _** _** l** ret
-ret Xa* Xa* *l* ret
-ret X_b X_b **l ret
-ret X__ ___ *rr cpy
-
-0 b__ X__ *** inv
-0 ___ ___ *** emp
-a ___ ___ *** inv
-b a__ a__ *** inv
-
-
-cpy _ab cab r*r cpy
-cpy _a_ _a_ **l gbk
-gbk _ab _ab **l gbk
-gbk _a_ _a_ *rr cpy
-cpy __b __b *** acc
-inv *__ *__ r** inv
-inv ___ ___ l** ret2
-ret2 ___ ___ l** ret2
-ret2 a__ ___ l** ret2
-ret2 b__ ___ l** ret2
-ret2 X__ ___ *** emp
-
-emp ___ I__ r** i
-i ___ l__ r** il
-il ___ l__ r** ill
-ill ___ e__ r** ille
-ille ___ g__ r** illeg
-illeg ___ a__ r** illega
-illega ___ l__ r** illegal
-illegal ___ ___ r** illegal_
-illegal_ ___ I__ r** illegal_i
-illegal_i ___ n__ r** illegal_in 
-illegal_in ___ p__ r** illegal_inp
-illegal_inp ___ u__ r** illegal_inpu
-illegal_inpu ___ t__ r** illegal_input
-
+#F = {8}
+#N = 2
+1 __ I_ r* i
+1 a_ x_ r* 2
+1 b_ b_ ** 9
+2 a_ a_ r* 2
+2 __ __ ** 9
+2 b_ bc rr 3
+3 b_ bc rr 3
+3 a_ a_ ** 9
+3 __ __ l* 4
+4 a_ a_ l* 4
+4 b_ b_ l* 4
+4 x_ x_ r* 5
+5 a_ x_ r* 2
+5 b_ b_ r* 5
+5 __ __ l* 6
+6 *_ __ l* 6
+6 __ __ rl 7
+7 _c c_ rl 7
+7 __ __ lr 8
+9 *_ *_ r* 9
+9 __ __ l* 10
+10 *_ __ l* 10
+10 __ __ r* 11
+11 __ I_ r* i
+i __ l_ r* il
+il __ l_ r* ill
+ill __ e_ r* ille
+ille __ g_ r* illeg
+illeg __ a_ r* illega
+illega __ l_ r* illegal
+illegal __ __ r* illegal_
+illegal_ __ I_ r* illegal_i
+illegal_i __ n_ r* illegal_in 
+illegal_in __ p_ r* illegal_inp
+illegal_inp __ u_ r* illegal_inpu
+illegal_inpu __ t_ r* illegal_input
 

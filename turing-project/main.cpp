@@ -7,7 +7,7 @@ using namespace std;
     StringSplit(line,',',vec); \
     for(int i = 0; i < vec.size(); i++){ n }
 #define HIT_BAD_AT(reason) \
-    { cerr<<"syntax error"<<endl; \
+    { cerr<<"syntax error"<<reason<<endl; \
     exit(3); }
 
 #define HIT_BAD_TRAP \
@@ -117,7 +117,7 @@ class QuMachine{
                         }else HIT_BAD_AT("q0")
                         break;
                     case 'N':
-                        if(sscanf(line.data(),"#N = %d",&type_num) != 1) HIT_BAD_AT("fail in type number") 
+                        if(sscanf(line.data(),"#N = %d",&type_num) != 1) HIT_BAD_AT(" fail in type number") 
                         for(int i = 0; i < type_num; i++){
                             paper tmp1,tmp2;
                             tmp1.index = tmp2.index = i;
@@ -138,9 +138,10 @@ class QuMachine{
             else{
                 vector<string> vec;
                 StringSplit(line, ' ', vec);
-                if(vec.size() != 5 || states.find(vec[0])==states.end() || vec[3].size()!=type_num ||
-                    states.find(vec[4])==states.end() || vec[1].size()!=type_num || vec[2].size()!=type_num ) 
-                    HIT_BAD_AT(":extra content in rules")
+                if(states.find(vec[0])==states.end() || states.find(vec[4])==states.end()) 
+                    HIT_BAD_AT(line + ": cannot find state")
+                if(vec.size() != 5 || vec[1].size()!=type_num || vec[2].size()!=type_num)
+                    HIT_BAD_AT(line + ": size of rules error")
                 bool flag = true;
                 vector<char> dir;
                 dir.push_back('l');
@@ -149,8 +150,8 @@ class QuMachine{
                 rule tmp;
                 tmp.new_state = states[vec[4]];
                 for(int i = 0; i < type_num; i++){
-                    if(vFind(type_symbols,vec[1][i]) == -1 && vec[1][i]!= '*') HIT_BAD_AT("unknown symbols")
-                    if(vFind(type_symbols,vec[2][i]) == -1 && vec[2][i]!= '*') HIT_BAD_AT("unknown symbols")
+                    if(vFind(type_symbols,vec[1][i]) == -1 && vec[1][i]!= '*') HIT_BAD_AT(line+" unknown symbols")
+                    if(vFind(type_symbols,vec[2][i]) == -1 && vec[2][i]!= '*') HIT_BAD_AT(line+" unknown symbols")
                 }
                 tmp.old_symbols = vec[1];
                 tmp.new_symbols = vec[2];
@@ -337,7 +338,21 @@ class QuMachine{
     void DoTuring(string input, bool verbose){
         if(input.empty()) types[0].content.append("_");
         for(int i = 0; i < input.length(); i++)
-            if(vFind(input_symbols, input[i]) == -1) HIT_BAD_AT("illigal input!")
+            if(vFind(input_symbols, input[i]) == -1){
+                if(verbose){
+                    cout<<"Input: "<<input<<endl<<"==================== ERR ===================="<<endl;
+                    cout<<"error: Symbol \""<< input[i] <<"\" in input is not defined in the set of input symbols"<<endl;
+                    cout<<"Input: "<<input<<endl;
+                    string heno = "       ";
+                    for(int j = 0; j < i; j++) heno.append(" ");
+                    cout<<heno<<"^"<<endl;
+                    cout<<"==================== END ===================="<<endl;
+                    exit(3);
+                }else{
+                    cerr<<"illegal input string"<<endl;
+                    exit(3);
+                }
+            }
         types[0].content.append(input);
 
         VB(cout<<"Input: "<<input<<endl<<"==================== RUN ===================="<<endl;)
